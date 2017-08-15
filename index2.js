@@ -31,16 +31,24 @@ window.onload = function() {
     myArray[0] = 3.14159;
     myArray[1] = 2.71828;
 
-    var myTable = "<table style='position: absolute; top: 300px; margin-left:350px;'><tr>"
-    myTable+="<td style='width: 100px; color: cyan;'>Col Head 1</td>"
-    myTable += "<td style='width: 100px; color: magenta; text-align: right;'>Col Head 2</td>";
-    myTable += "<td style='width: 100px; color: green; text-align: right;'>Col Head 3</td></tr>";
+    const my_pics = [
+      'plankton_pics/SPCP2-1501076425-022486-001-1936-2072-264-288.png',
+      'plankton_pics/SPCP2-1501143215-070184-008-772-1800-232-304.png'
+     ]
 
+    var myTable = "<table style='position: absolute; top: 300px; margin-left:450px;'><tr>"
+    myTable+="<td style='width: 100px; color: cyan;'>Col Head 100</td>"
+    myTable += "<td style='width: 100px; color: magenta; text-align: right;'>Col Head 2e6</td>";
+    myTable += "<td style='width: 100px; color: green; text-align: right;'>Col Head 3.1415927</td></tr>";
+
+// let image_new = new Image()
     for (var i = 0; i<myArray.length; i++){
+      // image_new.src = my_pics[i]
       myTable+="<tr><td style='width: 100px;'>Number " + i +" is: </td>"
       myArray[i] = myArray[i].toFixed(5)
       myTable+="<td style='width:100px; text-align: right'>"+myArray[i]+"</td>"
-      myTable+="<td style='width: 100px; text-align: right;'>" + myArray[i] + "</td></tr>";
+      // myTable+="<td style='width: 100px; text-align: right;'>" + my_pics[i] + "</td></tr>";
+      myTable+=`<td><img src = "${my_pics[i]} "></td></tr>`
     }
     myTable += "</table>";
     console.log('myTable = ', myTable)
