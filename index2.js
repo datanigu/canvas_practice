@@ -9,44 +9,96 @@ const WIDTH = window.innerWidth;
 const HEIGHT = window.innerHeight;
 const canvas = document.getElementById(`Darcy_canvas`);
 const ctx = canvas.getContext("2d");
-ctx.canvas.width = WIDTH;
+ctx.canvas.width = WIDTH
 ctx.canvas.height = HEIGHT;
-ctx.fillStyle = "white";
-// ctx.fillRect(0, 0, 320, 320);
+ctx.fillStyle = "cyan";
 ctx.font = "30px Times New Roman";
 ctx.fillText("Plankton!!", canvas.width / 2, canvas.height / 6);
 
-
 window.onload = function() {
-  const image = document.getElementById("source");
-  // image.style.position="absolute"
-// const image2 = document.getElementById("source2");
-//   ctx.drawImage(image2, 190, 10, 150, 180);
-
+  // Adding images
+  const image = document.getElementById("source2");
+  image.style.position="absolute"
+  const image2 = document.getElementById("source");
+  ctx.drawImage(image2, 190, 100, 150, 180);
 
   const image_add = new Image();
-  console.log("image_add = ", image_add);
   image_add.src = "plankton_pics/SPCP2-1501025702-061553-000-272-2468-208-235.png";
-  image_add.onload = function() {
-    ctx.drawImage(image_add, canvas.width/20, canvas.height / 5);
-    // ctx.drawImage(image_add, canvas.width / 11, canvas.height / 9);
 
-let offset = 90
+// Info on requestAnimationFrame:
+//http://www.javascriptkit.com/javatutors/requestanimationframe.shtml
+let offset = 15
 let counter =0
-const modval = 50
+const modval = 100
 const step = () =>{
-  counter +=1
-  ctx.drawImage(image,10,offset,150,180)
-  if(counter%modval <modval/2) offset +=0.5
-  if(counter%modval >=modval/2)offset = offset -0.5
-  // console.log(offset)
-  console.log(counter)
+  ctx.drawImage(image,600,offset,150,180)
+  if(counter%modval <modval/2) offset +=1.5
+  if(counter%modval >=modval/2)offset = offset -1.5
   if (counter >modval*4) return
   window.requestAnimationFrame(step)
+  counter +=1
 }
-const interval = setTimeout(window.requestAnimationFrame(step),5000)
+window.requestAnimationFrame(step)
 
+let random_offset1 = 50.3
+let random_offset2 = 50.3
+let counter2 = 0
 
+const step2 = (timestamp, element, duration) =>{
+  const delta_time = timestamp - start_time2
+  ctx.clearRect(random_offset1, random_offset2, 300, 300)
+  ctx.drawImage(element, random_offset1, random_offset2, 300, 300)
+  random_val = Math.random()
+  if ((Math.floor(random_val*100)%2) ==0){
+  random_offset1 = random_offset1+Math.random()
+  random_offset2 = random_offset2+Math.random()}
+  else {
+    random_offset1 = random_offset1-Math.random()
+    random_offset2 = random_offset2-Math.random()
+  }
+  counter2 +=1
+  if (delta_time < duration){
+  window.requestAnimationFrame(timestamp => step2(timestamp, element, duration))}
+}
+
+const step2_element = image2
+const duration2 = 4000
+let start_time2
+
+window.requestAnimationFrame(timestamp =>{
+  start_time2 = timestamp
+  step2(timestamp, step2_element, duration2)
+})
+
+////////////////////////////////////
+// Function to make the image move a certain distance (dist) in a amount of time
+let start_time
+
+// ctx.clearRect(next_dist, 280, 250, 320);
+
+const step3 =(timestamp, element, dist, duration) =>{
+  timestamp = timestamp || new Date().getTime()
+  const delta_time = timestamp - start_time
+  const next_dist = delta_time*(dist/duration)
+  // ctx.clearRect(0, 0, WIDTH, HEIGHT);
+  ctx.clearRect(next_dist, 280, 200, 280);
+  ctx.drawImage(element, next_dist, 280, 200, 280)
+  // ctx.clearRect(50+next_dist, 170, 150, 180);
+  if (delta_time < duration){
+    window.requestAnimationFrame(timestamp=>{
+      step3(timestamp, element, dist, duration)})
+  }
+}
+
+const image_to_move = image_add
+const dist_to_move = 400
+const time_to_move = 2000
+window.requestAnimationFrame(timestamp=>{
+  start_time = timestamp || new Date().getTime()
+  // ctx.clearRect(0, 280, 200, 280);
+  step3(timestamp, image_to_move, dist_to_move, time_to_move)})
+
+// Putting in table of images
     const my_pics = [
        'plankton_pics/SPCP2-1484136018-027039-001-1972-1192-48-176.png',
        'plankton_pics/SPCP2-1500817910-129078-001-2776-1376-240-176.png',
@@ -77,7 +129,6 @@ const interval = setTimeout(window.requestAnimationFrame(step),5000)
 
 let myTable
      myTable = `<table style='position: absolute; top: ${canvas.height/5}; margin-left:${canvas.width/4};'><tr>`
-
     for (let i = 0; i<my_pics.length; i++){
         myTable+=`<td><img src = "${my_pics[i]}" style="width:100px;height:100px;"></td>`
         if (i%5 == 4){
@@ -85,7 +136,7 @@ let myTable
   }
     myTable += "</tr></table>";
 
-    document.getElementById('tablePrint').innerHTML = myTable
-
-  };
+// Uncomment line below if want table of images to show up
+    // document.getElementById('tablePrint').innerHTML = myTable
+//////////////////////////////
 };
