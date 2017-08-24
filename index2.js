@@ -15,8 +15,8 @@ ctx.fillStyle = "cyan";
 ctx.font = "30px Times New Roman";
 ctx.fillText("Plankton!!", canvas.width / 2, canvas.height / 6);
 
-window.onload = function() {
-  // Adding images
+window.onload = () => {
+  // Getting images
   const image = document.getElementById("source2");
   image.style.position="absolute"
   const image2 = document.getElementById("source");
@@ -27,18 +27,50 @@ window.onload = function() {
 
 // Info on requestAnimationFrame:
 //http://www.javascriptkit.com/javatutors/requestanimationframe.shtml
-let offset = 15
-let counter =0
-const modval = 100
-const step = () =>{
-  ctx.drawImage(image,600,offset,150,180)
-  if(counter%modval <modval/2) offset +=1.5
-  if(counter%modval >=modval/2)offset = offset -1.5
-  if (counter >modval*4) return
-  window.requestAnimationFrame(step)
-  counter +=1
+let element
+let x
+let y
+let sx
+let sy
+const step = (timestamp, elements, duration) =>{
+  const delta_time = timestamp - init_time
+  // ctx.clearRect(0,0, WIDTH, HEIGHT)
+  elements.forEach(e => {
+    let {element, x, y, sx, sy} = e
+    // console.log('element', element)
+    // console.log('x', x)
+    const random_val_x = Math.random()
+    const random_val_y = Math.random()
+    if ((Math.floor(random_val_x*100)%2) ==0) {x = x+random_val_x}
+    else {x = x-random_val_x}
+      e.x = x
+
+    if ((Math.floor(random_val_y*100)%2) ==0) {
+      y = y+random_val_y}
+    else {y = y-random_val_y}
+
+      e.y = y
+    ctx.drawImage(element,x, y, sx, sy )
+  })
+  console.log('x',x)
+  console.log('element_array = ',element_array)
+  if (delta_time < duration){//Can also maybe try the cancel animation option
+    window.requestAnimationFrame(timestamp =>{
+      step(timestamp, elements, duration)
+    })
+  }
 }
-window.requestAnimationFrame(step)
+let init_time
+const element_array = [
+  {element: image, x:10,y:10, dx:100, dy:100},
+  {element: image2, x:150, y:150, dx:100, dy:100},
+  {element: image_add, x:10, y:300, dx:100, dy:100}
+]
+const duration_time = 600
+window.requestAnimationFrame(time =>{
+  init_time = time
+  step(time, element_array, duration_time)
+})
 
 let random_offset1 = 50.3
 let random_offset2 = 50.3
@@ -65,10 +97,10 @@ const step2_element = image2
 const duration2 = 4000
 let start_time2
 
-window.requestAnimationFrame(timestamp =>{
-  start_time2 = timestamp
-  step2(timestamp, step2_element, duration2)
-})
+// window.requestAnimationFrame(timestamp =>{
+//   start_time2 = timestamp
+//   step2(timestamp, step2_element, duration2)
+// })
 
 ////////////////////////////////////
 // Function to make the image move a certain distance (dist) in a amount of time
@@ -93,10 +125,10 @@ const step3 =(timestamp, element, dist, duration) =>{
 const image_to_move = image_add
 const dist_to_move = 400
 const time_to_move = 2000
-window.requestAnimationFrame(timestamp=>{
-  start_time = timestamp || new Date().getTime()
-  // ctx.clearRect(0, 280, 200, 280);
-  step3(timestamp, image_to_move, dist_to_move, time_to_move)})
+// window.requestAnimationFrame(timestamp=>{
+//   start_time = timestamp || new Date().getTime()
+//   // ctx.clearRect(0, 280, 200, 280);
+//   step3(timestamp, image_to_move, dist_to_move, time_to_move)})
 
 // Putting in table of images
     const my_pics = [
