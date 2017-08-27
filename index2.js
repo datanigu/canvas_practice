@@ -12,6 +12,7 @@ ctx.fillText("Plankton!!", canvas.width / 1.6, canvas.height / 6);
 ctx.textAlign = "center"
 
 window.onload = () => {
+
   // Getting images
   const image = document.getElementById("source2");
   image.style.position="absolute"
@@ -27,7 +28,7 @@ let x
 let y
 let sx
 let sy
-const move_mutliplier = 0.9 // fraction by how much random walk will move
+const move_mutliplier = 0.5 // multiple to determine how much random walk will move
 const step = (timestamp, elements, duration) =>{
   const delta_time = timestamp - init_time
   ctx.clearRect(0,0, WIDTH, HEIGHT)
@@ -106,4 +107,31 @@ let myTable
 
 // Uncomment line below if want table of images to show up
     document.getElementById('tablePrint').innerHTML = myTable
-};
+
+// Button to go to a different page
+    document.getElementById("button1").onclick = () =>{
+      location.href = "http://www.darcytaniguchi.com"
+    }
+
+    function visitPage(){
+        window.location='http://www.google.com';
+    }
+
+    // 1. Create the button
+    var button4 = document.createElement("button")
+    button4.style.backgroundColor = "white"
+    button4.style.position="absolute"
+    button4.style.top = "40px"
+    button4.style.left = "150px"
+
+    button4.innerHTML = "Equation of unit circle"
+
+    // 2. Append somewhere
+    var body = document.getElementsByTagName("body")[0];
+    body.appendChild(button4)
+
+    // 3. Add event handler
+    button4.addEventListener ("click", function() {
+      alert("x^2 + y^2 = 1")
+    })
+  }
